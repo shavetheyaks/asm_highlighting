@@ -1,0 +1,1303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+	AVR Assembly
+
+-->
+<language id="avr" _name="AVR Assembly" version="2.0" _section="Sources">
+	<metadata>
+		<property name="mimetypes">text/plain</property>
+		<property name="globs">*.asm</property>
+		<property name="line-comment-start">;</property>
+		<!--
+		<property name="block-comment-start"></property>
+		<property name="block-comment-end"></property>
+		-->
+	</metadata>
+
+	<styles>
+		<!-- Values -->
+		<style id="string"        _name="String"               map-to="def:string"/>
+		<style id="escaped-char"  _name="Escaped Character"    map-to="def:special-char"/>
+		<style id="number"        _name="Number"               map-to="def:constant"/>
+
+		<!-- Language -->
+		<style id="mnemonic"      _name="Mnemonic"             map-to="def:function"/>
+		<style id="register"      _name="Register"             map-to="def:type"/>
+		<style id="label"         _name="Label"                map-to="def:keyword"/>
+		<style id="identifier"    _name="Identifier"           map-to="def:keyword"/>
+
+		<!-- Assembler -->
+		<style id="comment"       _name="Comment"              map-to="def:comment"/>
+		<style id="preprocessor"  _name="Preprocessor"         map-to="def:preprocessor"/>
+		<style id="directive"     _name="Assembler Directive"  map-to="def:preprocessor"/>
+		<style id="operator"      _name="Expression Operator"  map-to="def:operator"/>
+		<style id="function"      _name="Expression Function"  map-to="def:preprocessor"/>
+
+		<!-- Device-Specific Constants -->
+		<style id="device-regs"   _name="Device Register Name" map-to="def:special-constant"/>
+		<style id="device-bits"   _name="Register Bit Name"    map-to="def:special-constant"/>
+		<style id="device-data"   _name="Data Address Name"    map-to="def:special-constant"/>
+		<style id="device-prog"   _name="Program Address Name" map-to="def:special-constant"/>
+		<style id="device-e2p"    _name="EEPROM Address Name"  map-to="def:special-constant"/>
+		<style id="device-consts" _name="Common Constants"     map-to="def:special-constant"/>
+	</styles>
+
+	<!--
+	<default-regex-options>
+	</default-regex-options>
+	-->
+
+	<!--
+	<keyword-char-class>
+	</keyword-char-class>
+	-->
+
+	<definitions>
+		<context id="comment" style-ref="comment">
+			<start>;</start>
+			<end>$</end>
+			<include>
+				<context ref="def:in-comment"/>
+			</include>
+		</context>
+
+		<context id="mnemonics" style-ref="mnemonic">
+			<!-- Arithmetic and Logic Instructions -->
+			<keyword>add</keyword>
+			<keyword>adc</keyword>
+			<keyword>adiw</keyword>
+			<keyword>sub</keyword>
+			<keyword>subi</keyword>
+			<keyword>sbc</keyword>
+			<keyword>sbci</keyword>
+			<keyword>sbiw</keyword>
+			<keyword>and</keyword>
+			<keyword>andi</keyword>
+			<keyword>or</keyword>
+			<keyword>ori</keyword>
+			<keyword>eor</keyword>
+			<keyword>com</keyword>
+			<keyword>neg</keyword>
+			<keyword>sbr</keyword>
+			<keyword>cbr</keyword>
+			<keyword>inc</keyword>
+			<keyword>dec</keyword>
+			<keyword>tst</keyword>
+			<keyword>clr</keyword>
+			<keyword>ser</keyword>
+			<keyword>mul</keyword>
+			<keyword>muls</keyword>
+			<keyword>mulsu</keyword>
+			<keyword>fmul</keyword>
+			<keyword>fmuls</keyword>
+			<keyword>fmulsu</keyword>
+			<keyword>des</keyword>
+
+			<!-- Change of Flow Instructions -->
+			<keyword>rjmp</keyword>
+			<keyword>ijmp</keyword>
+			<keyword>eijmp</keyword>
+			<keyword>jmp</keyword>
+			<keyword>rcall</keyword>
+			<keyword>icall</keyword>
+			<keyword>eicall</keyword>
+			<keyword>call</keyword>
+			<keyword>ret</keyword>
+			<keyword>reti</keyword>
+			<keyword>cpse</keyword>
+			<keyword>cp</keyword>
+			<keyword>cpc</keyword>
+			<keyword>cpi</keyword>
+			<keyword>sbrc</keyword>
+			<keyword>sbrs</keyword>
+			<keyword>sbic</keyword>
+			<keyword>sbis</keyword>
+			<keyword>brbs</keyword>
+			<keyword>brbc</keyword>
+			<keyword>breq</keyword>
+			<keyword>brne</keyword>
+			<keyword>brcs</keyword>
+			<keyword>brcc</keyword>
+			<keyword>brsh</keyword>
+			<keyword>brlo</keyword>
+			<keyword>brmi</keyword>
+			<keyword>brpl</keyword>
+			<keyword>brge</keyword>
+			<keyword>brlt</keyword>
+			<keyword>brhs</keyword>
+			<keyword>brhc</keyword>
+			<keyword>brts</keyword>
+			<keyword>brtc</keyword>
+			<keyword>brvs</keyword>
+			<keyword>brvc</keyword>
+			<keyword>brie</keyword>
+			<keyword>brid</keyword>
+
+			<!-- Data Transfer Instructions -->
+			<keyword>mov</keyword>
+			<keyword>movw</keyword>
+			<keyword>ldi</keyword>
+			<keyword>lds</keyword>
+			<keyword>ld</keyword>
+			<keyword>ldd</keyword>
+			<keyword>sts</keyword>
+			<keyword>st</keyword>
+			<keyword>std</keyword>
+			<keyword>lpm</keyword>
+			<keyword>elpm</keyword>
+			<keyword>spm</keyword>
+			<keyword>in</keyword>
+			<keyword>out</keyword>
+			<keyword>push</keyword>
+			<keyword>pop</keyword>
+			<keyword>xch</keyword>
+			<keyword>las</keyword>
+			<keyword>lac</keyword>
+			<keyword>lat</keyword>
+
+			<!-- Bit and Bit-Test Instructions -->
+			<keyword>lsl</keyword>
+			<keyword>lsr</keyword>
+			<keyword>rol</keyword>
+			<keyword>ror</keyword>
+			<keyword>asr</keyword>
+			<keyword>swap</keyword>
+			<keyword>sbi</keyword>
+			<keyword>cbi</keyword>
+			<keyword>bst</keyword>
+			<keyword>bld</keyword>
+			<keyword>bset</keyword>
+			<keyword>bclr</keyword>
+			<keyword>sec</keyword>
+			<keyword>clc</keyword>
+			<keyword>sen</keyword>
+			<keyword>cln</keyword>
+			<keyword>sez</keyword>
+			<keyword>clz</keyword>
+			<keyword>sei</keyword>
+			<keyword>cli</keyword>
+			<keyword>ses</keyword>
+			<keyword>cls</keyword>
+			<keyword>sev</keyword>
+			<keyword>clv</keyword>
+			<keyword>set</keyword>
+			<keyword>clt</keyword>
+			<keyword>seh</keyword>
+			<keyword>clh</keyword>
+
+			<!-- MCU Control Instructions -->
+			<keyword>break</keyword>
+			<keyword>nop</keyword>
+			<keyword>sleep</keyword>
+			<keyword>wdr</keyword>
+		</context>
+
+		<context id="registers" style-ref="register">
+			<keyword>r0</keyword>
+			<keyword>r1</keyword>
+			<keyword>r2</keyword>
+			<keyword>r3</keyword>
+			<keyword>r4</keyword>
+			<keyword>r5</keyword>
+			<keyword>r6</keyword>
+			<keyword>r7</keyword>
+			<keyword>r8</keyword>
+			<keyword>r9</keyword>
+			<keyword>r10</keyword>
+			<keyword>r11</keyword>
+			<keyword>r12</keyword>
+			<keyword>r13</keyword>
+			<keyword>r14</keyword>
+			<keyword>r15</keyword>
+			<keyword>r16</keyword>
+			<keyword>r17</keyword>
+			<keyword>r18</keyword>
+			<keyword>r19</keyword>
+			<keyword>r20</keyword>
+			<keyword>r21</keyword>
+			<keyword>r22</keyword>
+			<keyword>r23</keyword>
+			<keyword>r24</keyword>
+			<keyword>r25</keyword>
+			<keyword>r26</keyword>
+			<keyword>r27</keyword>
+			<keyword>r28</keyword>
+			<keyword>r29</keyword>
+			<keyword>r30</keyword>
+			<keyword>r31</keyword>
+
+			<keyword>[XYZ][LH]?</keyword>
+		</context>
+
+		<context id="m328p-regs" style-ref="device-regs">
+			<!-- Direct Access -->
+			<keyword>SREG</keyword>
+			<keyword>SPL</keyword>
+			<keyword>SPH</keyword>
+			<keyword>SPMCSR</keyword>
+			<keyword>MCUCR</keyword>
+			<keyword>MCUSR</keyword>
+			<keyword>SMCR</keyword>
+			<keyword>ACSR</keyword>
+			<keyword>SPDR</keyword>
+			<keyword>SPSR</keyword>
+			<keyword>SPCR</keyword>
+			<keyword>GPIOR2</keyword>
+			<keyword>GPIOR1</keyword>
+			<keyword>OCR0B</keyword>
+			<keyword>OCR0A</keyword>
+			<keyword>TCNT0</keyword>
+			<keyword>TCCR0B</keyword>
+			<keyword>TCCR0A</keyword>
+			<keyword>GTCCR</keyword>
+			<keyword>EEARH</keyword>
+			<keyword>EEARL</keyword>
+			<keyword>EEDR</keyword>
+			<keyword>EECR</keyword>
+			<keyword>GPIOR0</keyword>
+			<keyword>EIMSK</keyword>
+			<keyword>EIFR</keyword>
+			<keyword>PCIFR</keyword>
+			<keyword>TIFR2</keyword>
+			<keyword>TIFR1</keyword>
+			<keyword>TIFR0</keyword>
+			<keyword>PORTD</keyword>
+			<keyword>DDRD</keyword>
+			<keyword>PIND</keyword>
+			<keyword>PORTC</keyword>
+			<keyword>DDRC</keyword>
+			<keyword>PINC</keyword>
+			<keyword>PORTB</keyword>
+			<keyword>DDRB</keyword>
+			<keyword>PINB</keyword>
+		</context>
+
+		<context id="m328p-data" style-ref="device-data">
+			<!-- Memory mapped device registers -->
+			<keyword>UDR0</keyword>
+			<keyword>UBRR0L</keyword>
+			<keyword>UBRR0H</keyword>
+			<keyword>UCSR0C</keyword>
+			<keyword>UCSR0B</keyword>
+			<keyword>UCSR0A</keyword>
+			<keyword>TWAMR</keyword>
+			<keyword>TWCR</keyword>
+			<keyword>TWDR</keyword>
+			<keyword>TWAR</keyword>
+			<keyword>TWSR</keyword>
+			<keyword>TWBR</keyword>
+			<keyword>ASSR</keyword>
+			<keyword>OCR2B</keyword>
+			<keyword>OCR2A</keyword>
+			<keyword>TCNT2</keyword>
+			<keyword>TCCR2B</keyword>
+			<keyword>TCCR2A</keyword>
+			<keyword>OCR1BL</keyword>
+			<keyword>OCR1BH</keyword>
+			<keyword>OCR1AL</keyword>
+			<keyword>OCR1AH</keyword>
+			<keyword>ICR1L</keyword>
+			<keyword>ICR1H</keyword>
+			<keyword>TCNT1L</keyword>
+			<keyword>TCNT1H</keyword>
+			<keyword>TCCR1C</keyword>
+			<keyword>TCCR1B</keyword>
+			<keyword>TCCR1A</keyword>
+			<keyword>DIDR1</keyword>
+			<keyword>DIDR0</keyword>
+			<keyword>ADMUX</keyword>
+			<keyword>ADCSRB</keyword>
+			<keyword>ADCSRA</keyword>
+			<keyword>ADCH</keyword>
+			<keyword>ADCL</keyword>
+			<keyword>TIMSK2</keyword>
+			<keyword>TIMSK1</keyword>
+			<keyword>TIMSK0</keyword>
+			<keyword>PCMSK1</keyword>
+			<keyword>PCMSK2</keyword>
+			<keyword>PCMSK0</keyword>
+			<keyword>EICRA</keyword>
+			<keyword>PCICR</keyword>
+			<keyword>OSCCAL</keyword>
+			<keyword>PRR</keyword>
+			<keyword>CLKPR</keyword>
+			<keyword>WDTCSR</keyword>
+
+			<!-- Various markers -->
+			<keyword>IOEND</keyword>
+			<keyword>SRAM_START</keyword>
+			<keyword>RAMEND</keyword>
+			<keyword>XRAMEND</keyword>
+		</context>
+
+		<context id="m328p-prog" style-ref="device-prog">
+			<!-- Bootloader -->
+			<keyword>NRWW_START_ADDR</keyword>
+			<keyword>NRWW_STOP_ADDR</keyword>
+			<keyword>RWW_START_ADDR</keyword>
+			<keyword>RWW_STOP_ADDR</keyword>
+			<keyword>FIRSTBOOTSTART</keyword>
+			<keyword>SECONDBOOTSTART</keyword>
+			<keyword>THIRDBOOTSTART</keyword>
+			<keyword>FOURTHBOOTSTART</keyword>
+			<keyword>SMALLBOOTSTART</keyword>
+			<keyword>LARGEBOOTSTART</keyword>
+			<keyword>FLASHEND</keyword>
+
+			<!-- Interrupt vectors -->
+			<keyword>INT0addr</keyword>
+			<keyword>INT1addr</keyword>
+			<keyword>PCI0addr</keyword>
+			<keyword>PCI1addr</keyword>
+			<keyword>PCI2addr</keyword>
+			<keyword>WDTaddr</keyword>
+			<keyword>OC2Aaddr</keyword>
+			<keyword>OC2Baddr</keyword>
+			<keyword>OVF2addr</keyword>
+			<keyword>ICP1addr</keyword>
+			<keyword>OC1Aaddr</keyword>
+			<keyword>OC1Baddr</keyword>
+			<keyword>OVF1addr</keyword>
+			<keyword>OC0Aaddr</keyword>
+			<keyword>OC0Baddr</keyword>
+			<keyword>OVF0addr</keyword>
+			<keyword>SPIaddr</keyword>
+			<keyword>URXCaddr</keyword>
+			<keyword>UDREaddr</keyword>
+			<keyword>UTXCaddr</keyword>
+			<keyword>ADCCaddr</keyword>
+			<keyword>ERDYaddr</keyword>
+			<keyword>ACIaddr</keyword>
+			<keyword>TWIaddr</keyword>
+			<keyword>SPMRaddr</keyword>
+		</context>
+
+		<context id="m328p-e2p" style-ref="device-e2p">
+			<keyword>E2END</keyword>
+			<keyword>EEPROMEND</keyword>
+		</context>
+
+		<context id="m328p-consts" style-ref="device-consts">
+			<!-- Any constants that don't refer to addresses or bits, usually sizes -->
+
+			<!-- RAM constants -->
+			<keyword>SRAM_SIZE</keyword>
+
+			<!-- Program memory constants -->
+			<keyword>INT_VECTORS_SIZE</keyword>
+			<keyword>PAGESIZE</keyword>
+
+			<!-- EEPROM constants -->
+			<keyword>EEADRBITS</keyword>
+			<keyword>INT_VECTORS_SIZE</keyword>
+
+			<!-- Other -->
+			<keyword>SIGNATURE_000</keyword>
+			<keyword>SIGNATURE_001</keyword>
+			<keyword>SIGNATURE_002</keyword>
+		</context>
+
+		<context id="m328p-bits" style-ref="device-bits">
+			<!-- ***** USART0 *********************** -->
+
+			<!-- UDR0 - USART I/O Data Register -->
+			<keyword>UDR0_0</keyword>
+			<keyword>UDR0_1</keyword>
+			<keyword>UDR0_2</keyword>
+			<keyword>UDR0_3</keyword>
+			<keyword>UDR0_4</keyword>
+			<keyword>UDR0_5</keyword>
+			<keyword>UDR0_6</keyword>
+			<keyword>UDR0_7</keyword>
+
+			<!-- UCSR0A - USART Control and Status Register A -->
+			<keyword>MPCM0</keyword>
+			<keyword>U2X0</keyword>
+			<keyword>UPE0</keyword>
+			<keyword>DOR0</keyword>
+			<keyword>FE0</keyword>
+			<keyword>UDRE0</keyword>
+			<keyword>TXC0</keyword>
+			<keyword>RXC0</keyword>
+
+			<!-- UCSR0B - USART Control and Status Register B -->
+			<keyword>TXB80</keyword>
+			<keyword>RXB80</keyword>
+			<keyword>UCSZ02</keyword>
+			<keyword>TXEN0</keyword>
+			<keyword>RXEN0</keyword>
+			<keyword>UDRIE0</keyword>
+			<keyword>TXCIE0</keyword>
+			<keyword>RXCIE0</keyword>
+
+			<!-- UCSR0C - USART Control and Status Register C -->
+			<keyword>UCPOL0</keyword>
+			<keyword>UCSZ00</keyword>
+			<keyword>UCSZ01</keyword>
+			<keyword>USBS0</keyword>
+			<keyword>UPM00</keyword>
+			<keyword>UPM01</keyword>
+			<keyword>UMSEL00</keyword>
+			<keyword>UMSEL01</keyword>
+			<keyword>UCPHA0</keyword>  <!-- For compatibility -->
+			<keyword>UDORD0</keyword>  <!-- For compatibility -->
+			<keyword>UMSEL0</keyword>  <!-- For compatibility -->
+			<keyword>UMSEL1</keyword>  <!-- For compatibility -->
+
+			<!-- UBRR0H - USART Baud Rate Register High Byte -->
+			<keyword>UBRR8</keyword>
+			<keyword>UBRR9</keyword>
+			<keyword>UBRR10</keyword>
+			<keyword>UBRR11</keyword>
+
+			<!-- UBRR0L - USART Baud Rate Register Low Byte -->
+			<keyword>UBRR0</keyword>
+			<keyword>UBRR1</keyword>
+			<keyword>UBRR2</keyword>
+			<keyword>UBRR3</keyword>
+			<keyword>UBRR4</keyword>
+			<keyword>UBRR5</keyword>
+			<keyword>UBRR6</keyword>
+			<keyword>UBRR7</keyword>
+
+
+			<!-- ***** TWI ************************** -->
+
+			<!-- TWAMR - TWI (Slave) Address Mask Register -->
+			<keyword>TWAM0</keyword>
+			<keyword>TWAM1</keyword>
+			<keyword>TWAM2</keyword>
+			<keyword>TWAM3</keyword>
+			<keyword>TWAM4</keyword>
+			<keyword>TWAM5</keyword>
+			<keyword>TWAM6</keyword>
+			<keyword>TWAMR0</keyword>  <!-- For compatibility -->
+			<keyword>TWAMR1</keyword>  <!-- For compatibility -->
+			<keyword>TWAMR2</keyword>  <!-- For compatibility -->
+			<keyword>TWAMR3</keyword>  <!-- For compatibility -->
+			<keyword>TWAMR4</keyword>  <!-- For compatibility -->
+			<keyword>TWAMR5</keyword>  <!-- For compatibility -->
+			<keyword>TWAMR6</keyword>  <!-- For compatibility -->
+
+			<!-- TWBR - TWI Bit Rate register -->
+			<keyword>TWBR0</keyword>
+			<keyword>TWBR1</keyword>
+			<keyword>TWBR2</keyword>
+			<keyword>TWBR3</keyword>
+			<keyword>TWBR4</keyword>
+			<keyword>TWBR5</keyword>
+			<keyword>TWBR6</keyword>
+			<keyword>TWBR7</keyword>
+
+			<!-- TWCR - TWI Control Register -->
+			<keyword>TWIE</keyword>
+			<keyword>TWEN</keyword>
+			<keyword>TWWC</keyword>
+			<keyword>TWSTO</keyword>
+			<keyword>TWSTA</keyword>
+			<keyword>TWEA</keyword>
+			<keyword>TWINT</keyword>
+
+			<!-- TWSR - TWI Status Register -->
+			<keyword>TWPS0</keyword>
+			<keyword>TWPS1</keyword>
+			<keyword>TWS3</keyword>
+			<keyword>TWS4</keyword>
+			<keyword>TWS5</keyword>
+			<keyword>TWS6</keyword>
+			<keyword>TWS7</keyword>
+
+			<!-- TWDR - TWI Data register -->
+			<keyword>TWD0</keyword>
+			<keyword>TWD1</keyword>
+			<keyword>TWD2</keyword>
+			<keyword>TWD3</keyword>
+			<keyword>TWD4</keyword>
+			<keyword>TWD5</keyword>
+			<keyword>TWD6</keyword>
+			<keyword>TWD7</keyword>
+
+			<!-- TWAR - TWI (Slave) Address register -->
+			<keyword>TWGCE</keyword>
+			<keyword>TWA0</keyword>
+			<keyword>TWA1</keyword>
+			<keyword>TWA2</keyword>
+			<keyword>TWA3</keyword>
+			<keyword>TWA4</keyword>
+			<keyword>TWA5</keyword>
+			<keyword>TWA6</keyword>
+
+
+			<!-- ***** TIMER_COUNTER_1 ************** -->
+
+			<!-- TIMSK1 - Timer/Counter Interrupt Mask Register -->
+			<keyword>TOIE1</keyword>
+			<keyword>OCIE1A</keyword>
+			<keyword>OCIE1B</keyword>
+			<keyword>ICIE1</keyword>
+
+			<!-- TIFR1 - Timer/Counter Interrupt Flag register -->
+			<keyword>TOV1</keyword>
+			<keyword>OCF1A</keyword>
+			<keyword>OCF1B</keyword>
+			<keyword>ICF1</keyword>
+
+			<!-- TCCR1A - Timer/Counter1 Control Register A -->
+			<keyword>WGM10</keyword>
+			<keyword>WGM11</keyword>
+			<keyword>COM1B0</keyword>
+			<keyword>COM1B1</keyword>
+			<keyword>COM1A0</keyword>
+			<keyword>COM1A1</keyword>
+
+			<!-- TCCR1B - Timer/Counter1 Control Register B -->
+			<keyword>CS10</keyword>
+			<keyword>CS11</keyword>
+			<keyword>CS12</keyword>
+			<keyword>WGM12</keyword>
+			<keyword>WGM13</keyword>
+			<keyword>ICES1</keyword>
+			<keyword>ICNC1</keyword>
+
+			<!-- TCCR1C - Timer/Counter1 Control Register C -->
+			<keyword>FOC1B</keyword>
+			<keyword>FOC1A</keyword>
+
+			<!-- GTCCR - General Timer/Counter Control Register -->
+			<keyword>PSRSYNC</keyword>
+			<keyword>TSM</keyword>
+
+
+			<!-- ***** TIMER_COUNTER_2 ************** -->
+
+			<!-- TIMSK2 - Timer/Counter Interrupt Mask register -->
+			<keyword>TOIE2</keyword>
+			<keyword>OCIE2A</keyword>
+			<keyword>OCIE2B</keyword>
+			<keyword>TOIE2A</keyword>  <!-- For compatibility -->
+
+			<!-- TIFR2 - Timer/Counter Interrupt Flag Register -->
+			<keyword>TOV2</keyword>
+			<keyword>OCF2A</keyword>
+			<keyword>OCF2B</keyword>
+
+			<!-- TCCR2A - Timer/Counter2 Control Register A -->
+			<keyword>WGM20</keyword>
+			<keyword>WGM21</keyword>
+			<keyword>COM2B0</keyword>
+			<keyword>COM2B1</keyword>
+			<keyword>COM2A0</keyword>
+			<keyword>COM2A1</keyword>
+
+			<!-- TCCR2B - Timer/Counter2 Control Register B -->
+			<keyword>CS20</keyword>
+			<keyword>CS21</keyword>
+			<keyword>CS22</keyword>
+			<keyword>WGM22</keyword>
+			<keyword>FOC2B</keyword>
+			<keyword>FOC2A</keyword>
+
+			<!-- TCNT2 - Timer/Counter2 -->
+			<keyword>TCNT2_0</keyword>
+			<keyword>TCNT2_1</keyword>
+			<keyword>TCNT2_2</keyword>
+			<keyword>TCNT2_3</keyword>
+			<keyword>TCNT2_4</keyword>
+			<keyword>TCNT2_5</keyword>
+			<keyword>TCNT2_6</keyword>
+			<keyword>TCNT2_7</keyword>
+
+			<!-- OCR2A - Timer/Counter2 Output Compare Register A -->
+			<keyword>OCR2_0</keyword>
+			<keyword>OCR2_1</keyword>
+			<keyword>OCR2_2</keyword>
+			<keyword>OCR2_3</keyword>
+			<keyword>OCR2_4</keyword>
+			<keyword>OCR2_5</keyword>
+			<keyword>OCR2_6</keyword>
+			<keyword>OCR2_7</keyword>
+
+			<!-- ASSR - Asynchronous Status Register -->
+			<keyword>TCR2BUB</keyword>
+			<keyword>TCR2AUB</keyword>
+			<keyword>OCR2BUB</keyword>
+			<keyword>OCR2AUB</keyword>
+			<keyword>TCN2UB</keyword>
+			<keyword>AS2</keyword>
+			<keyword>EXCLK</keyword>
+
+			<!-- GTCCR - General Timer Counter Control register -->
+			<keyword>PSRASY</keyword>
+			<keyword>PSR2</keyword>  <!-- For compatibility -->
+
+
+			<!-- ***** AD_CONVERTER ***************** -->
+
+			<!-- ADMUX - The ADC multiplexer Selection Register -->
+			<keyword>MUX0</keyword>
+			<keyword>MUX1</keyword>
+			<keyword>MUX2</keyword>
+			<keyword>MUX3</keyword>
+			<keyword>ADLAR</keyword>
+			<keyword>REFS0</keyword>
+			<keyword>REFS1</keyword>
+
+			<!-- ADCSRA - The ADC Control and Status register A -->
+			<keyword>ADPS0</keyword>
+			<keyword>ADPS1</keyword>
+			<keyword>ADPS2</keyword>
+			<keyword>ADIE</keyword>
+			<keyword>ADIF</keyword>
+			<keyword>ADATE</keyword>
+			<keyword>ADSC</keyword>
+			<keyword>ADEN</keyword>
+
+			<!-- ADCSRB - The ADC Control and Status register B -->
+			<keyword>ADTS0</keyword>
+			<keyword>ADTS1</keyword>
+			<keyword>ADTS2</keyword>
+			<keyword>ACME</keyword>
+
+			<!-- ADCH - ADC Data Register High Byte -->
+			<keyword>ADCH0</keyword>
+			<keyword>ADCH1</keyword>
+			<keyword>ADCH2</keyword>
+			<keyword>ADCH3</keyword>
+			<keyword>ADCH4</keyword>
+			<keyword>ADCH5</keyword>
+			<keyword>ADCH6</keyword>
+			<keyword>ADCH7</keyword>
+
+			<!-- ADCL - ADC Data Register Low Byte -->
+			<keyword>ADCL0</keyword>
+			<keyword>ADCL1</keyword>
+			<keyword>ADCL2</keyword>
+			<keyword>ADCL3</keyword>
+			<keyword>ADCL4</keyword>
+			<keyword>ADCL5</keyword>
+			<keyword>ADCL6</keyword>
+			<keyword>ADCL7</keyword>
+
+			<!-- DIDR0 - Digital Input Disable Register -->
+			<keyword>ADC0D</keyword>
+			<keyword>ADC1D</keyword>
+			<keyword>ADC2D</keyword>
+			<keyword>ADC3D</keyword>
+			<keyword>ADC4D</keyword>
+			<keyword>ADC5D</keyword>
+
+
+			<!-- ***** ANALOG_COMPARATOR ************ -->
+
+			<!-- ACSR - Analog Comparator Control And Status Register -->
+			<keyword>ACIS0</keyword>
+			<keyword>ACIS1</keyword>
+			<keyword>ACIC</keyword>
+			<keyword>ACIE</keyword>
+			<keyword>ACI</keyword>
+			<keyword>ACO</keyword>
+			<keyword>ACBG</keyword>
+			<keyword>ACD</keyword>
+
+			<!-- DIDR1 - Digital Input Disable Register 1 -->
+			<keyword>AIN0D</keyword>
+			<keyword>AIN1D</keyword>
+
+
+			<!-- ***** PORTB ************************ -->
+
+			<!-- PORTB - Port B Data Register -->
+			<keyword>PORTB0</keyword>
+			<keyword>PORTB1</keyword>
+			<keyword>PORTB2</keyword>
+			<keyword>PORTB3</keyword>
+			<keyword>PORTB4</keyword>
+			<keyword>PORTB5</keyword>
+			<keyword>PORTB6</keyword>
+			<keyword>PORTB7</keyword>
+			<keyword>PB0</keyword>  <!-- For compatibility -->
+			<keyword>PB1</keyword>  <!-- For compatibility -->
+			<keyword>PB2</keyword>  <!-- For compatibility -->
+			<keyword>PB3</keyword>  <!-- For compatibility -->
+			<keyword>PB4</keyword>  <!-- For compatibility -->
+			<keyword>PB5</keyword>  <!-- For compatibility -->
+			<keyword>PB6</keyword>  <!-- For compatibility -->
+			<keyword>PB7</keyword>  <!-- For compatibility -->
+
+			<!-- DDRB - Port B Data Direction Register -->
+			<keyword>DDB0</keyword>
+			<keyword>DDB1</keyword>
+			<keyword>DDB2</keyword>
+			<keyword>DDB3</keyword>
+			<keyword>DDB4</keyword>
+			<keyword>DDB5</keyword>
+			<keyword>DDB6</keyword>
+			<keyword>DDB7</keyword>
+
+			<!-- PINB - Port B Input Pins -->
+			<keyword>PINB0</keyword>
+			<keyword>PINB1</keyword>
+			<keyword>PINB2</keyword>
+			<keyword>PINB3</keyword>
+			<keyword>PINB4</keyword>
+			<keyword>PINB5</keyword>
+			<keyword>PINB6</keyword>
+			<keyword>PINB7</keyword>
+
+
+			<!-- ***** PORTC ************************ -->
+
+			<!-- PORTC - Port C Data Register -->
+			<keyword>PORTC0</keyword>
+			<keyword>PORTC1</keyword>
+			<keyword>PORTC2</keyword>
+			<keyword>PORTC3</keyword>
+			<keyword>PORTC4</keyword>
+			<keyword>PORTC5</keyword>
+			<keyword>PORTC6</keyword>
+			<keyword>PC0</keyword>  <!-- For compatibility -->
+			<keyword>PC1</keyword>  <!-- For compatibility -->
+			<keyword>PC2</keyword>  <!-- For compatibility -->
+			<keyword>PC3</keyword>  <!-- For compatibility -->
+			<keyword>PC4</keyword>  <!-- For compatibility -->
+			<keyword>PC5</keyword>  <!-- For compatibility -->
+			<keyword>PC6</keyword>  <!-- For compatibility -->
+
+			<!-- DDRC - Port C Data Direction Register -->
+			<keyword>DDC0</keyword>
+			<keyword>DDC1</keyword>
+			<keyword>DDC2</keyword>
+			<keyword>DDC3</keyword>
+			<keyword>DDC4</keyword>
+			<keyword>DDC5</keyword>
+			<keyword>DDC6</keyword>
+
+			<!-- PINC - Port C Input Pins -->
+			<keyword>PINC0</keyword>
+			<keyword>PINC1</keyword>
+			<keyword>PINC2</keyword>
+			<keyword>PINC3</keyword>
+			<keyword>PINC4</keyword>
+			<keyword>PINC5</keyword>
+			<keyword>PINC6</keyword>
+
+
+			<!-- ***** PORTD ************************ -->
+
+			<!-- PORTD - Port D Data Register -->
+			<keyword>PORTD0</keyword>
+			<keyword>PORTD1</keyword>
+			<keyword>PORTD2</keyword>
+			<keyword>PORTD3</keyword>
+			<keyword>PORTD4</keyword>
+			<keyword>PORTD5</keyword>
+			<keyword>PORTD6</keyword>
+			<keyword>PORTD7</keyword>
+			<keyword>PD0</keyword>  <!-- For compatibility -->
+			<keyword>PD1</keyword>  <!-- For compatibility -->
+			<keyword>PD2</keyword>  <!-- For compatibility -->
+			<keyword>PD3</keyword>  <!-- For compatibility -->
+			<keyword>PD4</keyword>  <!-- For compatibility -->
+			<keyword>PD5</keyword>  <!-- For compatibility -->
+			<keyword>PD6</keyword>  <!-- For compatibility -->
+			<keyword>PD7</keyword>  <!-- For compatibility -->
+
+			<!-- DDRD - Port D Data Direction Register -->
+			<keyword>DDD0</keyword>
+			<keyword>DDD1</keyword>
+			<keyword>DDD2</keyword>
+			<keyword>DDD3</keyword>
+			<keyword>DDD4</keyword>
+			<keyword>DDD5</keyword>
+			<keyword>DDD6</keyword>
+			<keyword>DDD7</keyword>
+
+			<!-- PIND - Port D Input Pins -->
+			<keyword>PIND0</keyword>
+			<keyword>PIND1</keyword>
+			<keyword>PIND2</keyword>
+			<keyword>PIND3</keyword>
+			<keyword>PIND4</keyword>
+			<keyword>PIND5</keyword>
+			<keyword>PIND6</keyword>
+			<keyword>PIND7</keyword>
+
+
+			<!-- ***** TIMER_COUNTER_0 ************** -->
+
+			<!-- TIMSK0 - Timer/Counter0 Interrupt Mask Register -->
+			<keyword>TOIE0</keyword>
+			<keyword>OCIE0A</keyword>
+			<keyword>OCIE0B</keyword>
+
+			<!-- TIFR0 - Timer/Counter0 Interrupt Flag register -->
+			<keyword>TOV0</keyword>
+			<keyword>OCF0A</keyword>
+			<keyword>OCF0B</keyword>
+
+			<!-- TCCR0A - Timer/Counter  Control Register A -->
+			<keyword>WGM00</keyword>
+			<keyword>WGM01</keyword>
+			<keyword>COM0B0</keyword>
+			<keyword>COM0B1</keyword>
+			<keyword>COM0A0</keyword>
+			<keyword>COM0A1</keyword>
+
+			<!-- TCCR0B - Timer/Counter Control Register B -->
+			<keyword>CS00</keyword>
+			<keyword>CS01</keyword>
+			<keyword>CS02</keyword>
+			<keyword>WGM02</keyword>
+			<keyword>FOC0B</keyword>
+			<keyword>FOC0A</keyword>
+
+			<!-- TCNT0 - Timer/Counter0 -->
+			<keyword>TCNT0_0</keyword>
+			<keyword>TCNT0_1</keyword>
+			<keyword>TCNT0_2</keyword>
+			<keyword>TCNT0_3</keyword>
+			<keyword>TCNT0_4</keyword>
+			<keyword>TCNT0_5</keyword>
+			<keyword>TCNT0_6</keyword>
+			<keyword>TCNT0_7</keyword>
+
+			<!-- OCR0A - Timer/Counter0 Output Compare Register -->
+			<keyword>OCROA_0</keyword>
+			<keyword>OCROA_1</keyword>
+			<keyword>OCROA_2</keyword>
+			<keyword>OCROA_3</keyword>
+			<keyword>OCROA_4</keyword>
+			<keyword>OCROA_5</keyword>
+			<keyword>OCROA_6</keyword>
+			<keyword>OCROA_7</keyword>
+
+			<!-- OCR0B - Timer/Counter0 Output Compare Register -->
+			<keyword>OCR0B_0</keyword>
+			<keyword>OCR0B_1</keyword>
+			<keyword>OCR0B_2</keyword>
+			<keyword>OCR0B_3</keyword>
+			<keyword>OCR0B_4</keyword>
+			<keyword>OCR0B_5</keyword>
+			<keyword>OCR0B_6</keyword>
+			<keyword>OCR0B_7</keyword>
+
+			<!-- GTCCR - General Timer/Counter Control Register -->
+			<keyword>PSR10</keyword>  <!-- For compatibility -->
+
+
+			<!-- ***** EXTERNAL_INTERRUPT *********** -->
+
+			<!-- EICRA - External Interrupt Control Register -->
+			<keyword>ISC00</keyword>
+			<keyword>ISC01</keyword>
+			<keyword>ISC10</keyword>
+			<keyword>ISC11</keyword>
+
+			<!-- EIMSK - External Interrupt Mask Register -->
+			<keyword>INT0</keyword>
+			<keyword>INT1</keyword>
+
+			<!-- EIFR - External Interrupt Flag Register -->
+			<keyword>INTF0</keyword>
+			<keyword>INTF1</keyword>
+
+			<!-- PCICR - Pin Change Interrupt Control Register -->
+			<keyword>PCIE0</keyword>
+			<keyword>PCIE1</keyword>
+			<keyword>PCIE2</keyword>
+
+			<!-- PCMSK2 - Pin Change Mask Register 2 -->
+			<keyword>PCINT16</keyword>
+			<keyword>PCINT17</keyword>
+			<keyword>PCINT18</keyword>
+			<keyword>PCINT19</keyword>
+			<keyword>PCINT20</keyword>
+			<keyword>PCINT21</keyword>
+			<keyword>PCINT22</keyword>
+			<keyword>PCINT23</keyword>
+
+			<!-- PCMSK1 - Pin Change Mask Register 1 -->
+			<keyword>PCINT8</keyword>
+			<keyword>PCINT9</keyword>
+			<keyword>PCINT10</keyword>
+			<keyword>PCINT11</keyword>
+			<keyword>PCINT12</keyword>
+			<keyword>PCINT13</keyword>
+			<keyword>PCINT14</keyword>
+
+			<!-- PCMSK0 - Pin Change Mask Register 0 -->
+			<keyword>PCINT0</keyword>
+			<keyword>PCINT1</keyword>
+			<keyword>PCINT2</keyword>
+			<keyword>PCINT3</keyword>
+			<keyword>PCINT4</keyword>
+			<keyword>PCINT5</keyword>
+			<keyword>PCINT6</keyword>
+			<keyword>PCINT7</keyword>
+
+			<!-- PCIFR - Pin Change Interrupt Flag Register -->
+			<keyword>PCIF0</keyword>
+			<keyword>PCIF1</keyword>
+			<keyword>PCIF2</keyword>
+
+
+			<!-- ***** SPI ************************** -->
+
+			<!-- SPDR - SPI Data Register -->
+			<keyword>SPDR0</keyword>
+			<keyword>SPDR1</keyword>
+			<keyword>SPDR2</keyword>
+			<keyword>SPDR3</keyword>
+			<keyword>SPDR4</keyword>
+			<keyword>SPDR5</keyword>
+			<keyword>SPDR6</keyword>
+			<keyword>SPDR7</keyword>
+
+			<!-- SPSR - SPI Status Register -->
+			<keyword>SPI2X</keyword>
+			<keyword>WCOL</keyword>
+			<keyword>SPIF</keyword>
+
+			<!-- SPCR - SPI Control Register -->
+			<keyword>SPR0</keyword>
+			<keyword>SPR1</keyword>
+			<keyword>CPHA</keyword>
+			<keyword>CPOL</keyword>
+			<keyword>MSTR</keyword>
+			<keyword>DORD</keyword>
+			<keyword>SPE</keyword>
+			<keyword>SPIE</keyword>
+
+
+			<!-- ***** WATCHDOG ********************* -->
+
+			<!-- WDTCSR - Watchdog Timer Control Register -->
+			<keyword>WDP0</keyword>
+			<keyword>WDP1</keyword>
+			<keyword>WDP2</keyword>
+			<keyword>WDE</keyword>
+			<keyword>WDCE</keyword>
+			<keyword>WDP3</keyword>
+			<keyword>WDIE</keyword>
+			<keyword>WDIF</keyword>
+
+
+			<!-- ***** CPU ************************** -->
+
+			<!-- SREG - Status Register -->
+			<keyword>SREG_C</keyword>
+			<keyword>SREG_Z</keyword>
+			<keyword>SREG_N</keyword>
+			<keyword>SREG_V</keyword>
+			<keyword>SREG_S</keyword>
+			<keyword>SREG_H</keyword>
+			<keyword>SREG_T</keyword>
+			<keyword>SREG_I</keyword>
+
+			<!-- OSCCAL - Oscillator Calibration Value -->
+			<keyword>CAL0</keyword>
+			<keyword>CAL1</keyword>
+			<keyword>CAL2</keyword>
+			<keyword>CAL3</keyword>
+			<keyword>CAL4</keyword>
+			<keyword>CAL5</keyword>
+			<keyword>CAL6</keyword>
+			<keyword>CAL7</keyword>
+
+			<!-- CLKPR - Clock Prescale Register -->
+			<keyword>CLKPS0</keyword>
+			<keyword>CLKPS1</keyword>
+			<keyword>CLKPS2</keyword>
+			<keyword>CLKPS3</keyword>
+			<keyword>CLKPCE</keyword>
+
+			<!-- SPMCSR - Store Program Memory Control and Status Register -->
+			<keyword>SELFPRGEN</keyword>
+			<keyword>PGERS</keyword>
+			<keyword>PGWRT</keyword>
+			<keyword>BLBSET</keyword>
+			<keyword>RWWSRE</keyword>
+			<keyword>RWWSB</keyword>
+			<keyword>SPMIE</keyword>
+
+			<!-- MCUCR - MCU Control Register -->
+			<keyword>IVCE</keyword>
+			<keyword>IVSEL</keyword>
+			<keyword>PUD</keyword>
+			<keyword>BODSE</keyword>
+			<keyword>BODS</keyword>
+
+			<!-- MCUSR - MCU Status Register -->
+			<keyword>PORF</keyword>
+			<keyword>EXTRF</keyword>
+			<keyword>BORF</keyword>
+			<keyword>WDRF</keyword>
+			<keyword>EXTREF</keyword>  <!-- For compatibility -->
+
+			<!-- SMCR - Sleep Mode Control Register -->
+			<keyword>SE</keyword>
+			<keyword>SM0</keyword>
+			<keyword>SM1</keyword>
+			<keyword>SM2</keyword>
+
+			<!-- GPIOR2 - General Purpose I/O Register 2 -->
+			<keyword>GPIOR20</keyword>
+			<keyword>GPIOR21</keyword>
+			<keyword>GPIOR22</keyword>
+			<keyword>GPIOR23</keyword>
+			<keyword>GPIOR24</keyword>
+			<keyword>GPIOR25</keyword>
+			<keyword>GPIOR26</keyword>
+			<keyword>GPIOR27</keyword>
+
+			<!-- GPIOR1 - General Purpose I/O Register 1 -->
+			<keyword>GPIOR10</keyword>
+			<keyword>GPIOR11</keyword>
+			<keyword>GPIOR12</keyword>
+			<keyword>GPIOR13</keyword>
+			<keyword>GPIOR14</keyword>
+			<keyword>GPIOR15</keyword>
+			<keyword>GPIOR16</keyword>
+			<keyword>GPIOR17</keyword>
+
+			<!-- GPIOR0 - General Purpose I/O Register 0 -->
+			<keyword>GPIOR00</keyword>
+			<keyword>GPIOR01</keyword>
+			<keyword>GPIOR02</keyword>
+			<keyword>GPIOR03</keyword>
+			<keyword>GPIOR04</keyword>
+			<keyword>GPIOR05</keyword>
+			<keyword>GPIOR06</keyword>
+			<keyword>GPIOR07</keyword>
+
+			<!-- PRR - Power Reduction Register -->
+			<keyword>PRADC</keyword>
+			<keyword>PRUSART0</keyword>
+			<keyword>PRSPI</keyword>
+			<keyword>PRTIM1</keyword>
+			<keyword>PRTIM0</keyword>
+			<keyword>PRTIM2</keyword>
+			<keyword>PRTWI</keyword>
+
+
+			<!-- ***** EEPROM *********************** -->
+
+			<!-- EEARL - EEPROM Address Register Low Byte -->
+			<keyword>EEAR0</keyword>
+			<keyword>EEAR1</keyword>
+			<keyword>EEAR2</keyword>
+			<keyword>EEAR3</keyword>
+			<keyword>EEAR4</keyword>
+			<keyword>EEAR5</keyword>
+			<keyword>EEAR6</keyword>
+			<keyword>EEAR7</keyword>
+
+			<!-- EEARH - EEPROM Address Register High Byte -->
+			<keyword>EEAR8</keyword>
+			<keyword>EEAR9</keyword>
+
+			<!-- EEDR - EEPROM Data Register -->
+			<keyword>EEDR0</keyword>
+			<keyword>EEDR1</keyword>
+			<keyword>EEDR2</keyword>
+			<keyword>EEDR3</keyword>
+			<keyword>EEDR4</keyword>
+			<keyword>EEDR5</keyword>
+			<keyword>EEDR6</keyword>
+			<keyword>EEDR7</keyword>
+
+			<!-- EECR - EEPROM Control Register -->
+			<keyword>EERE</keyword>
+			<keyword>EEPE</keyword>
+			<keyword>EEMPE</keyword>
+			<keyword>EERIE</keyword>
+			<keyword>EEPM0</keyword>
+			<keyword>EEPM1</keyword>
+
+
+			<!-- ***** LOCKSBITS ******************************************************** -->
+
+			<keyword>LB1</keyword>
+			<keyword>LB2</keyword>
+			<keyword>BLB01</keyword>
+			<keyword>BLB02</keyword>
+			<keyword>BLB11</keyword>
+			<keyword>BLB12</keyword>
+
+
+			<!-- ***** FUSES ************************************************************ -->
+
+			<!-- LOW fuse bits -->
+			<keyword>CKSEL0</keyword>
+			<keyword>CKSEL1</keyword>
+			<keyword>CKSEL2</keyword>
+			<keyword>CKSEL3</keyword>
+			<keyword>SUT0</keyword>
+			<keyword>SUT1</keyword>
+			<keyword>CKOUT</keyword>
+			<keyword>CKDIV8</keyword>
+
+			<!-- HIGH fuse bits -->
+			<keyword>BOOTRST</keyword>
+			<keyword>BOOTSZ0</keyword>
+			<keyword>BOOTSZ1</keyword>
+			<keyword>EESAVE</keyword>
+			<keyword>WDTON</keyword>
+			<keyword>SPIEN</keyword>
+			<keyword>DWEN</keyword>
+			<keyword>RSTDISBL</keyword>
+
+			<!-- EXTENDED fuse bits -->
+			<keyword>BODLEVEL0</keyword>
+			<keyword>BODLEVEL1</keyword>
+			<keyword>BODLEVEL2</keyword>
+		</context>
+
+
+		<define-regex id="decimal" extended="true">
+			(?&lt;![\w\.]) ([1-9][0-9_]* | 0) (?![\w\.])
+		</define-regex>
+		<define-regex id="octal" extended="true">
+			(?&lt;![\w\.]) 0 [0-7_]+ (?![\w\.])
+		</define-regex>
+		<define-regex id="hexadecimal" extended="true">
+			(?&lt;![\w\.]) 0 [xX] [0-9a-fA-F_]+ (?![\w\.])
+		</define-regex>
+		<define-regex id="binary" extended="true">
+			(?&lt;![\w\.]) 0 [bB] [01_]+ (?![\w\.])
+		</define-regex>
+		<define-regex id="float" extended="true" case-sensitive="false">
+			\b
+				([0-9]+ e [-+]? [0-9]+ |
+				([0-9]* \. [0-9]+ | [0-9]+ \.)
+				(e [-+]? [0-9]+)?) [fl]?
+			\b
+		</define-regex>
+
+		<context id="decimal" style-ref="number">
+			<match>\%{decimal}</match>
+		</context>
+		<context id="octal" style-ref="number">
+			<match>\%{octal}</match>
+		</context>
+		<context id="hexadecimal" style-ref="number">
+			<match>\%{hexadecimal}</match>
+		</context>
+		<context id="binary" style-ref="number">
+			<match>\%{binary}</match>
+		</context>
+		<context id="float" style-ref="number">
+			<match>\%{float}</match>
+		</context>
+
+		<define-regex id="period-prefix" extended="true">
+			\.
+		</define-regex>
+		<context id="directives" style-ref="directive">
+			<prefix>\%{period-prefix}</prefix>
+			<keyword>byte</keyword>
+			<keyword>cseg</keyword>
+			<keyword>csegsize</keyword>
+			<keyword>db</keyword>
+			<keyword>dd</keyword>
+			<keyword>def</keyword>
+			<keyword>dq</keyword>
+			<keyword>dseg</keyword>
+			<keyword>dw</keyword>
+			<keyword>elif</keyword>
+			<keyword>else</keyword>
+			<keyword>endif</keyword>
+			<keyword>endm</keyword>
+			<keyword>endmacro</keyword>
+			<keyword>equ</keyword>
+			<keyword>error</keyword>
+			<keyword>eseg</keyword>
+			<keyword>exit</keyword>
+			<keyword>if</keyword>
+			<keyword>ifdef</keyword>
+			<keyword>ifndef</keyword>
+			<keyword>include</keyword>
+			<keyword>list</keyword>
+			<keyword>listmac</keyword>
+			<keyword>macro</keyword>
+			<keyword>message</keyword>
+			<keyword>nolist</keyword>
+			<keyword>org</keyword>
+			<keyword>overlap</keyword>
+			<keyword>nooverlap</keyword>
+			<keyword>set</keyword>
+			<keyword>undef</keyword>
+			<keyword>warning</keyword>
+		</context>
+
+		<context id="character">
+			<include>
+				<context ref="def:single-quoted-string"/>
+			</include>
+		</context>
+
+		<context id="string">
+			<start>"</start>
+			<end>"</end>
+			<include>
+				<context ref="def:line-continue"/>
+			</include>
+		</context>
+
+		<context id="functions" style-ref="function">
+			<keyword>LOW</keyword>
+			<keyword>HIGH</keyword>
+			<keyword>BYTE2</keyword>
+			<keyword>BYTE3</keyword>
+			<keyword>BYTE4</keyword>
+			<keyword>LWRD</keyword>
+			<keyword>HWRD</keyword>
+			<keyword>PAGE</keyword>
+			<keyword>EXP2</keyword>
+			<keyword>LOG2</keyword>
+			<keyword>INT</keyword>
+			<keyword>FRAC</keyword>
+			<keyword>Q7</keyword>
+			<keyword>Q15</keyword>
+			<keyword>ABS</keyword>
+			<keyword>DEFINED</keyword>
+			<keyword>STRLEN</keyword>
+		</context>
+
+		<!-- Main language context -->
+		<context id="avr" class="no-spell-check">
+			<include>
+				<!-- Specific to the assembler program -->
+				<context ref="comment"/>
+
+				<context ref="binary"/>
+				<context ref="octal"/>
+				<context ref="decimal"/>
+				<context ref="hexadecimal"/>
+				<context ref="string"/>
+				<context ref="character"/>
+
+				<context ref="directives"/>
+				<context ref="functions"/>
+
+				<!-- Specific to the architecture's language -->
+				<context ref="mnemonics"/>
+				<context ref="registers"/>
+
+				<!-- Specific to the device -->
+				<context ref="m328p-regs"/>
+				<context ref="m328p-data"/>
+				<context ref="m328p-prog"/>
+				<context ref="m328p-e2p"/>
+				<context ref="m328p-consts"/>
+				<context ref="m328p-bits"/>
+
+				<context id="identifier" style-ref="identifier">
+					<match>[_a-zA-Z][_a-zA-Z0-9]*:?</match>
+				</context>
+			</include>
+		</context>
+	</definitions>
+</language>
+
